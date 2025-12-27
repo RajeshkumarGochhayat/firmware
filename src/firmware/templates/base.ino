@@ -3,6 +3,8 @@
 #include <SPI.h>
 #include <SD.h>
 
+{{INCLUDES}}
+
 const char* ssid = "Powerhouse";
 const char* password = "coolie no 5821";
 const char* BASE_URL = "http://46.202.160.176:2020/agrifield/save";
@@ -15,8 +17,6 @@ bool sendPost(const String& payload) {
   http.begin(BASE_URL);
   http.addHeader("Content-Type", "application/json");
   int code = http.POST(payload);
-  Serial.print("📡 HTTP Status: ");
-  Serial.println(code);
   http.end();
   return code >= 200 && code < 300;
 }
@@ -35,28 +35,20 @@ String envelope(const char* type, const String& data) {
          "\",\"data\":" + data + "}";
 }
 
+{{GLOBALS}}
+
 void setup() {
   Serial.begin(115200);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) delay(500);
 
-  if (!SD.begin(5)) {
-    Serial.println("❌ SD Card failed");
-  } else {
-    Serial.println("✅ SD Card ready");
-  }
+  SD.begin(5);
 
-  setupWeather();
-  setupSoil();
-  setupNPK();
-  setupGPS();
+  {{SETUP_CODE}}
 }
 
 void loop() {
-  loopWeather();
-  loopSoil();
-  loopNPK();
-  loopGPS();
+  {{LOOP_CODE}}
   delay(10000);
 }

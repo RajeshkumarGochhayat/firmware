@@ -4,7 +4,7 @@ import { GenerateFirmwareDto } from './dto/generate-firmware.dto';
 
 @Controller('firmware')
 export class FirmwareController {
-  constructor(private readonly firmwareService: FirmwareService) { }
+  constructor(private readonly firmwareService: FirmwareService) {}
 
   @Post('generate')
   @Header('Content-Type', 'text/plain')
